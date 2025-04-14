@@ -41,22 +41,7 @@
       console.error("Html5QrcodeScanner is not defined. Please check the script URL.");
     } else {
 
-      // Define supported formats: QR and common barcodes
-      const supportedFormats = [
-        Html5QrcodeSupportedFormats.QR_CODE,
-        Html5QrcodeSupportedFormats.CODE_128,
-        Html5QrcodeSupportedFormats.EAN_13,
-        Html5QrcodeSupportedFormats.UPC_A
-      ];
-
-      const config = {
-        fps: 10,
-        qrbox: 250,
-        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-        formatsToSupport: supportedFormats
-      };
-
-      const qrCodeScanner = new Html5QrcodeScanner("reader", config, false);
+  
       // Initialize the QR Code scanner
       const qrCodeScanner = new Html5QrcodeScanner(
         "reader", {
