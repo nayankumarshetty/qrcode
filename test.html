@@ -42,32 +42,48 @@
     } else if (typeof Html5QrcodeScanner === 'undefined') {
     console.error("Html5QrcodeScanner is not defined. Please check the script URL.");
   } else {
-    const supportedFormats = [
-      Html5QrcodeSupportedFormats.QR_CODE,
-      Html5QrcodeSupportedFormats.CODE_128,
-      Html5QrcodeSupportedFormats.EAN_13,
-      Html5QrcodeSupportedFormats.UPC_A
-    ];
+    //   // Initialize the QR Code scanner
+    //   const qrCodeScanner = new Html5QrcodeScanner(
+    //     "reader", {
+    //       fps: 10, 
+    //       qrbox: 250
+    //     });
 
-    const config = {
-      fps: 10,
-      qrbox: 250,
-      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-      formatsToSupport: supportedFormats
-    };
+    //   // Start scanning
+    //   qrCodeScanner.render(
+    //     (decodedText) => {
+    //       // Show the result when a QR code is decoded
+    //       document.getElementById("result-text").innerText = decodedText;
+    //     },
+    //     (errorMessage) => {
+    //       // Handle errors (if necessary)
+    //       console.error(errorMessage);
+    //     }
+    //   );
+    // }
+const supportedFormats = [
+  Html5QrcodeSupportedFormats.CODE_128,
+  Html5QrcodeSupportedFormats.EAN_13,
+  Html5QrcodeSupportedFormats.UPC_A
+];
 
-    const qrCodeScanner = new Html5QrcodeScanner("reader", config, false);
+const config = {
+  fps: 10,
+  qrbox: { width: 300, height: 100 },  // Better for barcode scanning
+  supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+  formatsToSupport: supportedFormats
+};
 
-    qrCodeScanner.render(
-      (decodedText, decodedResult) => {
-        document.getElementById("result-text").innerText = 
-          `Scanned: ${decodedText} (Format: ${decodedResult.result.format.formatName})`;
-      },
-      (errorMessage) => {
-        console.warn("Scan error:", errorMessage);
-      }
-    );
+const barcodeScanner = new Html5QrcodeScanner("reader", config, false);
+barcodeScanner.render(
+  (decodedText, decodedResult) => {
+    document.getElementById("result-text").innerText = 
+      `Scanned: ${decodedText} (Format: ${decodedResult.result.format.formatName})`;
+  },
+  (errorMessage) => {
+    console.warn("Scan error:", errorMessage);
   }
+);
       
   </script>
 
