@@ -7,13 +7,15 @@
   <style>
     #reader {
       width: 100%;
+      max-width: 500px;
       height: 300px;
-      margin: 0 auto;
+      margin: 20px auto;
+      border: 1px solid #ccc;
     }
     #result {
+      text-align: center;
       font-size: 1.2rem;
       margin-top: 20px;
-      text-align: center;
     }
   </style>
 </head>
@@ -22,27 +24,35 @@
   <div id="reader"></div>
   <div id="result">Waiting for barcode...</div>
 
-  <!-- ✅ Make sure this version is used -->
+  <!-- ✅ Load html5-qrcode library -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
 
   <script>
-  const html5QrCode = new Html5Qrcode("reader");
+    window.onload = () => {
+      // ✅ Barcode format support
+      const formatsToSupport = [
+        Html5QrcodeSupportedFormats.CODE_128,
+        Html5QrcodeSupportedFormats.EAN_13,
+        Html5QrcodeSupportedFormats.UPC_A
+      ];
 
-  const config = {
-    fps: 10,
-    qrbox: { width: 300, height: 100 }
-  };
+      const config = {
+        fps: 10,
+        qrbox: { width: 300, height: 100 },
+        formatsToSupport: formatsToSupport,
+        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+      };
 
-  html5QrCode.start(
-    { facingMode: "environment" },
-    config,
-    (decodedText, decodedResult) => {
-      document.getElementById("result").innerText = `Scanned: ${decodedText}`;
-    },
-    (errorMessage) => {
-      console.warn("Error:", errorMessage);
-    }
-  );
-</script>
+      const scanner = new Html5QrcodeScanner("reader", config, false);
+      scanner.render(
+        (decodedText) => {
+          document.getElementById("result").innerText = `Scanned: ${decodedText}`;
+        },
+        (error) => {
+          console.warn("Scan error:", error);
+        }
+      );
+    };
+  </script>
 </body>
 </html>
