@@ -24,34 +24,28 @@
 
   <!-- ✅ Make sure this version is used -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
-  
+
   <script>
-    window.addEventListener("load", () => {
-      const formatsToSupport = [
-        Html5QrcodeSupportedFormats.CODE_128,
-        Html5QrcodeSupportedFormats.EAN_13,
-        Html5QrcodeSupportedFormats.UPC_A
-      ];
+    <script>
+  const html5QrCode = new Html5Qrcode("reader");
 
-      const config = {
-        fps: 10,
-        qrbox: { width: 300, height: 100 },
-        formatsToSupport: formatsToSupport,
-        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-      };
+  const config = {
+    fps: 10,
+    qrbox: { width: 300, height: 100 }
+  };
 
-      const html5QrcodeScanner = new Html5QrcodeScanner("reader", config, false);
+  html5QrCode.start(
+    { facingMode: "environment" },
+    config,
+    (decodedText, decodedResult) => {
+      document.getElementById("result").innerText = `Scanned: ${decodedText}`;
+    },
+    (errorMessage) => {
+      console.warn("Error:", errorMessage);
+    }
+  );
+</script>
 
-      html5QrcodeScanner.render(
-        (decodedText, decodedResult) => {
-          document.getElementById("result").innerText = `Scanned: ${decodedText}`;
-        },
-        (error) => {
-          // Optional: comment this out to reduce noise
-          console.warn("Scan error:", error);
-        }
-      );
-    });
   </script>
 </body>
 </html>
