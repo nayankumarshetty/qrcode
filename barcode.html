@@ -13,27 +13,30 @@
   <div id="result">Waiting for barcode scan...</div>
 
   <script>
+    // Initialize QuaggaJS for live streaming
     Quagga.init({
       inputStream: {
         type: "LiveStream",
         constraints: {
-          facingMode: "environment"
-        }
+          facingMode: "environment"  // Use the back camera on mobile devices
+        },
+        target: document.querySelector('#reader')  // Target div for live video
       },
       decoder: {
-        readers: ["code_128_reader", "ean_reader", "ean_8_reader", "upc_reader", "upc_e_reader"]
+        readers: ["code_128_reader", "ean_reader", "ean_8_reader", "upc_reader", "upc_e_reader"] // Supported formats
       }
     }, function(err) {
       if (err) {
         console.log(err);
         return;
       }
-      Quagga.start();
+      Quagga.start();  // Start the scanner
     });
 
+    // Event handler for barcode detection
     Quagga.onDetected(function(result) {
       document.getElementById("result").innerText = `Scanned Barcode: ${result.codeResult.code}`;
-      Quagga.stop();
+      Quagga.stop();  // Stop after one scan
     });
   </script>
 </body>
