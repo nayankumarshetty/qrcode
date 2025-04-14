@@ -27,9 +27,13 @@
   <!-- ✅ Load html5-qrcode library -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
 
+  <!-- ✅ Manually expose supported formats -->
+  <script>
+    const Html5QrcodeSupportedFormats = Html5Qrcode.SUPPORTED_FORMATS;
+  </script>
+
   <script>
     window.onload = () => {
-      // ✅ Barcode format support
       const formatsToSupport = [
         Html5QrcodeSupportedFormats.CODE_128,
         Html5QrcodeSupportedFormats.EAN_13,
