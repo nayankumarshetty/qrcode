@@ -39,26 +39,36 @@
     // Ensure the library is loaded before using it
     if (typeof Html5QrcodeScanner === 'undefined') {
       console.error("Html5QrcodeScanner is not defined. Please check the script URL.");
-    } else {
-      // Initialize the QR Code scanner
-      const qrCodeScanner = new Html5QrcodeScanner(
-        "reader", {
-          fps: 10, 
-          qrbox: 250
-        });
+    } else if (typeof Html5QrcodeScanner === 'undefined') {
+    console.error("Html5QrcodeScanner is not defined. Please check the script URL.");
+  } else {
+    const supportedFormats = [
+      Html5QrcodeSupportedFormats.QR_CODE,
+      Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.UPC_A
+    ];
 
-      // Start scanning
-      qrCodeScanner.render(
-        (decodedText) => {
-          // Show the result when a QR code is decoded
-          document.getElementById("result-text").innerText = decodedText;
-        },
-        (errorMessage) => {
-          // Handle errors (if necessary)
-          console.error(errorMessage);
-        }
-      );
-    }
+    const config = {
+      fps: 10,
+      qrbox: 250,
+      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+      formatsToSupport: supportedFormats
+    };
+
+    const qrCodeScanner = new Html5QrcodeScanner("reader", config, false);
+
+    qrCodeScanner.render(
+      (decodedText, decodedResult) => {
+        document.getElementById("result-text").innerText = 
+          `Scanned: ${decodedText} (Format: ${decodedResult.result.format.formatName})`;
+      },
+      (errorMessage) => {
+        console.warn("Scan error:", errorMessage);
+      }
+    );
+  }
+      
   </script>
 
 </body>
